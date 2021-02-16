@@ -3,23 +3,35 @@
     <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
       <!-- formGroup connects to the form initialized and connects to our formControlName object -->
       <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input type="text" id="username" formControlName="username" class="form-control">
-          <span *ngIf="!signupForm.get('username').valid && signupForm.get('username').touched"
-            class="help-block">Please
-            enter a valid username</span>
-        </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="text" id="email" formControlName="email" class="form-control">
-          <span *ngIf="!signupForm.get('email').valid && signupForm.get('email').touched" class="help-block">Please
-            enter a valid email</span>
+        <div formGroupName="userData">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" formControlName="username" class="form-control">
+            <span *ngIf="!signupForm.get('userData.username').valid && signupForm.get('userData.username').touched"
+              class="help-block">Please
+              enter a valid username</span>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" id="email" formControlName="email" class="form-control">
+            <span *ngIf="!signupForm.get('userData.email').valid && signupForm.get('userData.email').touched"
+              class="help-block">Please
+              enter a valid email</span>
+          </div>
         </div>
         <div class="radio" *ngFor="let gender of genders">
           <label>
             <input type="radio" formControlName="gender" [value]="gender">{{ gender }}
           </label>
+        </div>
+        <!-- similar to formGroup and formGroupName, we link the section to the formArrayName -->
+        <div formArrayName="hobbies">
+          <h4>Your Hobbies</h4>
+          <button class="btn btn-success" type="button" (click)="onAddHobby()">Add Hobby</button>
+          <!-- we're not passing existing value of the array so we property bind to index on each button click -->
+          <div class="form-group" *ngFor="let hobbyControl of Controls; let i = index">
+            <input type="text" class="form-control" [formControlName]="i">
+          </div>
         </div>
         <span *ngIf="!signupForm.valid && signupForm.touched" class="help-block">Please
           enter a valid data</span>
